@@ -17,7 +17,7 @@ public class HorizontalSliderButton : BaseSliderButton
 
             GlobalPosition = new(x, y);
 
-            parent.UpdatePercentageBasedOnMiddleButton();
+            parent.UpdatePercentageBasedOnGrabber();
 
             previouslyPressed = true;
         }
@@ -30,7 +30,7 @@ public class HorizontalSliderButton : BaseSliderButton
             
                 GlobalPosition = new(x, y);
             
-                parent.UpdatePercentageBasedOnMiddleButton(true);
+                parent.UpdatePercentageBasedOnGrabber(true);
             
                 previouslyPressed = false;
             }

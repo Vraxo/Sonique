@@ -11,7 +11,7 @@ public class VerticalSliderButton : BaseSliderButton
         if (Pressed)
         {
             GlobalPosition = new(parent.GlobalPosition.X, Raylib.GetMousePosition().Y);
-            parent.UpdatePercentageBasedOnMiddleButton();
+            parent.UpdatePercentageBasedOnGrabber();
         }
 
         UpdatePositionVertical(parent, initial);

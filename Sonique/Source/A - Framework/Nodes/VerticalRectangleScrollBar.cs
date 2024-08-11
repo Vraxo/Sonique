@@ -121,7 +121,7 @@
 //
 //        AddChild(Grabber);
 //
-//        Grabber.Style.Default.FillColor = new(128, 128, 128, 255);
+//        Grabber.FilledStyle.Default.FillColor = new(128, 128, 128, 255);
 //    }
 //
 //    private void SnapMiddleButtonToClickedPosition()

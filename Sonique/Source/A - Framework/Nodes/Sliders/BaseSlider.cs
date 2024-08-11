@@ -14,8 +14,8 @@ public abstract class BaseSlider : ClickableRectangle
         } 
     }
     public bool HasButtons = true;
-    public int Layer = 0;
-    public SliderStyle Style = new();
+    public ButtonStyle FilledStyle = new();
+    public ButtonStyle EmptyStyle = new();
     public BaseSliderButton Grabber;
     public Action<BaseSlider> OnUpdate = (slider) => { };
     public event EventHandler<float>? PercentageChanged;
@@ -43,36 +43,46 @@ public abstract class BaseSlider : ClickableRectangle
         }
     }
 
+    public BaseSlider()
+    {
+        EmptyStyle.FillColor = new(101, 101, 101, 255);
+        FilledStyle.FillColor = new(71, 114, 179, 255);
+    }
+
     public override void Start()
     {
         Grabber = GetChild<BaseSliderButton>("MiddleButton");
+        Grabber.Layer = Layer;
 
         var decrementButton = GetChild<Button>("DecrementButton");
         var incrementButton = GetChild<Button>("IncrementButton");
-
-        decrementButton.LeftClicked += OnDecrementButtonLeftClicked;
-        incrementButton.LeftClicked += OnIncrementButtonLeftClicked;
-
-        Grabber.Layer = Layer;
-        decrementButton.Layer = Layer;
-        incrementButton.Layer = Layer;
 
         if (!HasButtons)
         {
             decrementButton.Deactivate();
             incrementButton.Deactivate();
         }
+        else
+        {
+            decrementButton.LeftClicked += OnDecrementButtonLeftClicked;
+            incrementButton.LeftClicked += OnIncrementButtonLeftClicked;
+
+            decrementButton.Layer = Layer;
+            incrementButton.Layer = Layer;
+        }
+
     }
 
     public override void Update()
     {
+        UpdatePercentage();
         HandleClicks();
         Draw();
         OnUpdate(this);
         base.Update();
     }
 
-    public abstract void UpdatePercentageBasedOnMiddleButton(bool released = false);
+    public abstract void UpdatePercentageBasedOnGrabber(bool released = false);
 
     public abstract void MoveMiddleButton(int direction);
 
@@ -85,6 +95,8 @@ public abstract class BaseSlider : ClickableRectangle
     {
         MoveMiddleButton(1);
     }
+
+    protected abstract void UpdatePercentage();
 
     protected abstract void HandleClicks();
 

@@ -10,22 +10,30 @@ public partial class VerticalSlider : BaseSlider
         OriginPreset = OriginPreset.TopCenter;
     }
 
-    public override void UpdatePercentageBasedOnMiddleButton(bool released = false)
+    public override void UpdatePercentageBasedOnGrabber(bool released = false)
     {
-        float currentPosition = Grabber.GlobalPosition.Y;
-        float minPos = GlobalPosition.Y - Origin.Y;
-        float maxPos = minPos + Size.Y;
-
         float previousPercentage = Percentage;
 
-        Percentage = (currentPosition - minPos) / (maxPos - minPos);
-        Percentage = Math.Clamp(Percentage, 0, 1);
+        // Update the percentage based on the grabber's position
+        UpdatePercentage();
 
+        // If the percentage has changed, invoke the PercentageChanged event
         if (Percentage != previousPercentage)
         {
             OnPercentageChanged();
         }
     }
+
+    protected override void UpdatePercentage()
+    {
+        float currentPosition = Grabber.GlobalPosition.Y;
+        float minPos = GlobalPosition.Y - Origin.Y;
+        float maxPos = minPos + Size.Y;
+
+        // Calculate and clamp the percentage
+        Percentage = Math.Clamp((currentPosition - minPos) / (maxPos - minPos), 0, 1);
+    }
+
 
     public override void MoveMiddleButton(int direction)
     {
@@ -39,7 +47,7 @@ public partial class VerticalSlider : BaseSlider
         float y = Grabber.GlobalPosition.Y + direction * movementUnit;
 
         Grabber.GlobalPosition = new(x, y);
-        UpdatePercentageBasedOnMiddleButton();
+        UpdatePercentageBasedOnGrabber();
     }
 
     protected override void HandleClicks()
@@ -64,10 +72,35 @@ public partial class VerticalSlider : BaseSlider
             Size = Size
         };
 
+        // Draw the empty part of the slider
         Raylib.DrawRectangleRounded(
             rectangle,
-            0,
+            EmptyStyle.Current.Roundness,
+            (int)Size.Y,
+            EmptyStyle.Current.FillColor);
+
+        // Draw the filled part of the slider
+        Rectangle filledRectangle = new Rectangle()
+        {
+            Position = new Vector2(rectangle.Position.X, rectangle.Position.Y + (1 - Percentage) * rectangle.Size.Y),
+            Size = new Vector2(rectangle.Size.X, Percentage * rectangle.Size.Y)
+        };
+
+        Raylib.DrawRectangleRounded(
+            filledRectangle,
+            FilledStyle.Current.Roundness,
             (int)Size.X,
-            Color.Gray);
+            FilledStyle.Current.FillColor);
+
+        // Draw the outline
+        if (EmptyStyle.Current.OutlineThickness > 0)
+        {
+            Raylib.DrawRectangleRoundedLines(
+                rectangle,
+                EmptyStyle.Current.Roundness,
+                (int)Size.X,
+                EmptyStyle.Current.OutlineThickness,
+                EmptyStyle.Current.OutlineColor);
+        }
     }
 }

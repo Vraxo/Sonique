@@ -12,28 +12,37 @@ public partial class HorizontalSlider : BaseSlider
         OriginPreset = OriginPreset.CenterLeft;
     }
 
-    public override void UpdatePercentageBasedOnMiddleButton(bool released = false)
+    public override void UpdatePercentageBasedOnGrabber(bool released = false)
     {
-        float currentPosition = Grabber.GlobalPosition.X;
-        float minPos = GlobalPosition.X;
-        float maxPos = minPos + Size.X;
-
         float previousValue = Percentage;
 
-        Percentage = (currentPosition - minPos) / (maxPos - minPos);
-        Percentage = Math.Clamp(Percentage, 0, 1);
+        // Update the percentage based on the grabber's position
+        UpdatePercentage();
 
+        // If the percentage has changed, invoke the PercentageChanged event
         if (Percentage != previousValue)
         {
             OnPercentageChanged();
         }
 
+        // Handle the Released event if the grabber was pressed and is now released
         if (wasPressed && !Grabber.Pressed)
         {
             OnReleased();
         }
 
+        // Update the pressed state
         wasPressed = Grabber.Pressed;
+    }
+
+    protected override void UpdatePercentage()
+    {
+        float currentPosition = Grabber.GlobalPosition.X;
+        float minPos = GlobalPosition.X;
+        float maxPos = minPos + Size.X;
+
+        // Calculate and clamp the percentage
+        Percentage = Math.Clamp((currentPosition - minPos) / (maxPos - minPos), 0, 1);
     }
 
     public override void MoveMiddleButton(int direction)
@@ -47,7 +56,7 @@ public partial class HorizontalSlider : BaseSlider
         float y = Grabber.GlobalPosition.Y;
 
         Grabber.GlobalPosition = new(x, y);
-        UpdatePercentageBasedOnMiddleButton();
+        UpdatePercentageBasedOnGrabber();
     }
 
     protected override void HandleClicks()
@@ -72,10 +81,35 @@ public partial class HorizontalSlider : BaseSlider
             Size = Size
         };
 
+        // Draw the empty part of the slider
         Raylib.DrawRectangleRounded(
             rectangle,
-            Style.Roundness,
+            EmptyStyle.Current.Roundness,
             (int)Size.Y,
-            Style.FillColor);
+            EmptyStyle.Current.FillColor);
+
+        // Draw the filled part of the slider
+        Rectangle filledRectangle = new Rectangle()
+        {
+            Position = rectangle.Position,
+            Size = new Vector2(Percentage * rectangle.Size.X, rectangle.Size.Y)
+        };
+
+        Raylib.DrawRectangleRounded(
+            filledRectangle,
+            FilledStyle.Current.Roundness,
+            (int)Size.Y,
+            FilledStyle.Current.FillColor);
+
+        // Draw the outline
+        if (EmptyStyle.Current.OutlineThickness > 0)
+        {
+            Raylib.DrawRectangleRoundedLines(
+                rectangle,
+                EmptyStyle.Current.Roundness,
+                (int)Size.Y,
+                EmptyStyle.Current.OutlineThickness,
+                EmptyStyle.Current.OutlineColor);
+        }
     }
 }
