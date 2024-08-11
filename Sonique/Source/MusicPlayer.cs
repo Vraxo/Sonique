@@ -17,15 +17,15 @@ public class MusicPlayer : AudioPlayer
 
     private void OnSliderPercentageChanged(object? sender, float e)
     {
-        Play(e * AudioLength);
-        Console.WriteLine(e);
+        float timestamp = e * AudioLength;
+        Play(timestamp);
     }
 
     public override void Update()
     {
-        if (slider.MiddleButton != null)
+        if (slider.Grabber != null)
         {
-            if (!slider.MiddleButton.Pressed)
+            if (!slider.Grabber.Pressed)
             {
                 slider.ExternalValue = TimePlayed;
 
@@ -34,10 +34,10 @@ public class MusicPlayer : AudioPlayer
 
                 // Calculate the new X position of the middle button based on the slider's width
                 float x = slider.Position.X + percentage * slider.Size.X;
-                float y = slider.MiddleButton.GlobalPosition.Y;
+                float y = slider.Grabber.GlobalPosition.Y;
 
                 // Update the middle button's position
-                slider.MiddleButton.GlobalPosition = new(x, y);
+                slider.Grabber.GlobalPosition = new(x, y);
             }
         }
 

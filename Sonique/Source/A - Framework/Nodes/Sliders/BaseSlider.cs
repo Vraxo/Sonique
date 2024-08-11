@@ -1,6 +1,8 @@
-﻿namespace Sonique;
+﻿using Raylib_cs;
 
-public abstract class BaseSlider : Node2D
+namespace Sonique;
+
+public abstract class BaseSlider : ClickableRectangle
 {
     public float Percentage = 0;
     public float MaxExternalValue = 0;
@@ -14,7 +16,7 @@ public abstract class BaseSlider : Node2D
     public bool HasButtons = true;
     public int Layer = 0;
     public SliderStyle Style = new();
-    public BaseSliderButton MiddleButton;
+    public BaseSliderButton Grabber;
     public Action<BaseSlider> OnUpdate = (slider) => { };
     public event EventHandler<float>? PercentageChanged;
     public event EventHandler<float>? Released;
@@ -33,17 +35,17 @@ public abstract class BaseSlider : Node2D
                 //float minPos = GlobalPosition.Y - Origin.Y;
                 //float maxPos = minPos + Size.Y;
 
-                //float x = MiddleButton.GlobalPosition.X;
+                //float x = Grabber.GlobalPosition.X;
                 //float y = ExternalValue / MaxExternalValue * maxPos;
 
-                //MiddleButton.GlobalPosition = new(x, y);
+                //Grabber.GlobalPosition = new(x, y);
             }
         }
     }
 
     public override void Start()
     {
-        MiddleButton = GetChild<BaseSliderButton>("MiddleButton");
+        Grabber = GetChild<BaseSliderButton>("MiddleButton");
 
         var decrementButton = GetChild<Button>("DecrementButton");
         var incrementButton = GetChild<Button>("IncrementButton");
@@ -51,7 +53,7 @@ public abstract class BaseSlider : Node2D
         decrementButton.LeftClicked += OnDecrementButtonLeftClicked;
         incrementButton.LeftClicked += OnIncrementButtonLeftClicked;
 
-        MiddleButton.Layer = Layer;
+        Grabber.Layer = Layer;
         decrementButton.Layer = Layer;
         incrementButton.Layer = Layer;
 
@@ -64,12 +66,15 @@ public abstract class BaseSlider : Node2D
 
     public override void Update()
     {
+        HandleClicks();
         Draw();
         OnUpdate(this);
         base.Update();
     }
 
     public abstract void UpdatePercentageBasedOnMiddleButton(bool released = false);
+
+    public abstract void MoveMiddleButton(int direction);
 
     private void OnDecrementButtonLeftClicked(object? sender, EventArgs e)
     {
@@ -81,7 +86,7 @@ public abstract class BaseSlider : Node2D
         MoveMiddleButton(1);
     }
 
-    public abstract void MoveMiddleButton(int direction);
+    protected abstract void HandleClicks();
 
     protected abstract void Draw();
 

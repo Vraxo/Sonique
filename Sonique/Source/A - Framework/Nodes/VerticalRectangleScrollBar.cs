@@ -5,7 +5,7 @@
 //class VerticalRectangleScrollBar : Node2D
 //{
 //    public Action<VerticalRectangleScrollBar> OnUpdate = (slider) => { };
-//    public Button MiddleButton;
+//    public Button Grabber;
 //    public Button TopButton;
 //    public Button BottomButton;
 //
@@ -31,7 +31,7 @@
 //
 //    public override void Update()
 //    {
-//        Value = MiddleButton.Position.Y / (Size.Y - MiddleButton.Size.Y);
+//        Value = Grabber.Position.Y / (Size.Y - Grabber.Size.Y);
 //        BottomButton.Position.Y = Size.Y + 8;
 //
 //        DrawRectangle();
@@ -44,7 +44,7 @@
 //
 //    private void OnTopButtonLeftClicked(object? sender, EventArgs e)
 //    {
-//        MiddleButton.Position.Y -= MiddleButton.Size.Y;
+//        Grabber.Position.Y -= Grabber.Size.Y;
 //        Value -= BottomButton.Size.Y / Size.Y;
 //    }
 //
@@ -87,13 +87,13 @@
 //
 //    private void OnBottomButtonLeftClicked(object? sender, EventArgs e)
 //    {
-//        MiddleButton.Position.Y += MiddleButton.Size.Y;
+//        Grabber.Position.Y += Grabber.Size.Y;
 //        Value += BottomButton.Size.Y / Size.Y;
 //    }
 //
 //    private void AddMiddleButton()
 //    {
-//        MiddleButton = new()
+//        Grabber = new()
 //        {
 //            Size = new(Size.X, Size.X),
 //            Origin = new(Size.X / 2, 0),
@@ -119,16 +119,16 @@
 //            }
 //        };
 //
-//        AddChild(MiddleButton);
+//        AddChild(Grabber);
 //
-//        MiddleButton.Style.Default.FillColor = new(128, 128, 128, 255);
+//        Grabber.Style.Default.FillColor = new(128, 128, 128, 255);
 //    }
 //
 //    private void SnapMiddleButtonToClickedPosition()
 //    {
 //        if (IsMouseOver() && Raylib.IsMouseButtonPressed(MouseButton.Left))
 //        {
-//            MiddleButton.Position.Y = Raylib.GetMousePosition().Y - MiddleButton.Size.Y;
+//            Grabber.Position.Y = Raylib.GetMousePosition().Y - Grabber.Size.Y;
 //        }
 //    }
 //

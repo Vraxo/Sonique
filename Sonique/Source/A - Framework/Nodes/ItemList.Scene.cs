@@ -9,13 +9,13 @@ public partial class ItemList : ClickableRectangle
             OnUpdate = (slider) =>
             {
                 float x = Size.X - Origin.X - slider.Size.X - slider.Origin.X;
-                float y = -Origin.Y + slider.MiddleButton.Size.Y * 2.5F; // *4
+                float y = -Origin.Y + slider.Grabber.Size.Y * 2.5F; // *4
 
                 slider.Position = new(x, y);
 
-                //slider.Position.Y = slider.MiddleButton.Radius * 2.5F;
+                //slider.Position.Y = slider.Grabber.Radius * 2.5F;
 
-                slider.Size = new(slider.Size.X, Size.Y - slider.MiddleButton.Size.Y * 5); // * 8
+                slider.Size = new(slider.Size.X, Size.Y - slider.Grabber.Size.Y * 5); // * 8
 
                 int numItemsBesidesThisPage = Items.Count - maxItemsShownAtOnce;
 

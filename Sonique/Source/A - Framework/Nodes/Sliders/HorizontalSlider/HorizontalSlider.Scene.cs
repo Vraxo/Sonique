@@ -27,7 +27,7 @@ public partial class HorizontalSlider : BaseSlider
             Layer = ClickableLayer.PanelButtons,
             OnUpdate = (button) =>
             {
-                float x = Size.X + (MiddleButton.Size.X * 1.25F);
+                float x = Size.X + (Grabber.Size.X * 1.25F);
                 float y = button.Position.Y;
 
                 button.Position = new(x, y);

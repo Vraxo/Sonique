@@ -12,7 +12,7 @@ public partial class VerticalSlider : BaseSlider
 
     public override void UpdatePercentageBasedOnMiddleButton(bool released = false)
     {
-        float currentPosition = MiddleButton.GlobalPosition.Y;
+        float currentPosition = Grabber.GlobalPosition.Y;
         float minPos = GlobalPosition.Y - Origin.Y;
         float maxPos = minPos + Size.Y;
 
@@ -34,12 +34,26 @@ public partial class VerticalSlider : BaseSlider
             return;
         }
 
-        float x = MiddleButton.GlobalPosition.X;
+        float x = Grabber.GlobalPosition.X;
         float movementUnit = Size.Y / MathF.Abs(MaxExternalValue - 1);
-        float y = MiddleButton.GlobalPosition.Y + direction * movementUnit;
+        float y = Grabber.GlobalPosition.Y + direction * movementUnit;
 
-        MiddleButton.GlobalPosition = new(x, y);
+        Grabber.GlobalPosition = new(x, y);
         UpdatePercentageBasedOnMiddleButton();
+    }
+
+    protected override void HandleClicks()
+    {
+        if (IsMouseOver())
+        {
+            if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                float x = Grabber.GlobalPosition.X;
+                float y = Raylib.GetMousePosition().Y;
+
+                Grabber.GlobalPosition = new(x, y);
+            }
+        }
     }
 
     protected override void Draw()

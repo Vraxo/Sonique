@@ -14,7 +14,7 @@ public partial class HorizontalSlider : BaseSlider
 
     public override void UpdatePercentageBasedOnMiddleButton(bool released = false)
     {
-        float currentPosition = MiddleButton.GlobalPosition.X;
+        float currentPosition = Grabber.GlobalPosition.X;
         float minPos = GlobalPosition.X;
         float maxPos = minPos + Size.X;
 
@@ -28,12 +28,12 @@ public partial class HorizontalSlider : BaseSlider
             OnPercentageChanged();
         }
 
-        if (wasPressed && !MiddleButton.Pressed)
+        if (wasPressed && !Grabber.Pressed)
         {
             OnReleased();
         }
 
-        wasPressed = MiddleButton.Pressed;
+        wasPressed = Grabber.Pressed;
     }
 
     public override void MoveMiddleButton(int direction)
@@ -43,11 +43,25 @@ public partial class HorizontalSlider : BaseSlider
             return;
         }
 
-        float x = MiddleButton.GlobalPosition.X + direction * (Size.X / MaxExternalValue);
-        float y = MiddleButton.GlobalPosition.Y;
+        float x = Grabber.GlobalPosition.X + direction * (Size.X / MaxExternalValue);
+        float y = Grabber.GlobalPosition.Y;
 
-        MiddleButton.GlobalPosition = new(x, y);
+        Grabber.GlobalPosition = new(x, y);
         UpdatePercentageBasedOnMiddleButton();
+    }
+
+    protected override void HandleClicks()
+    {
+        if (IsMouseOver())
+        {
+            if (Raylib.IsMouseButtonPressed(MouseButton.Left))
+            {
+                float x = Raylib.GetMousePosition().X;
+                float y = Grabber.GlobalPosition.Y;
+
+                Grabber.GlobalPosition = new(x, y);
+            }
+        }
     }
 
     protected override void Draw()
