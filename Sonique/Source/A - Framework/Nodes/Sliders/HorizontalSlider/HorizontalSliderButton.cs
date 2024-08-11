@@ -1,0 +1,73 @@
+﻿using Raylib_cs;
+
+namespace Sonique;
+
+public class HorizontalSliderButton : BaseSliderButton
+{
+    private bool previouslyPressed = false;
+
+    protected override void UpdatePosition(bool initial = false)
+    {
+        var parent = Parent as BaseSlider;
+
+        if (Pressed)
+        {
+            float x = Raylib.GetMousePosition().X;
+            float y = parent.GlobalPosition.Y;
+
+            GlobalPosition = new(x, y);
+
+            parent.UpdatePercentageBasedOnMiddleButton();
+
+            previouslyPressed = true;
+        }
+        else
+        {
+            if (previouslyPressed)
+            {
+                float x = Raylib.GetMousePosition().X;
+                float y = parent.GlobalPosition.Y;
+            
+                GlobalPosition = new(x, y);
+            
+                parent.UpdatePercentageBasedOnMiddleButton(true);
+            
+                previouslyPressed = false;
+            }
+        }
+
+        UpdatePosition(parent, initial);
+    }
+
+    private void UpdatePosition(BaseSlider parent, bool initial)
+    {
+        if (Raylib.IsWindowMinimized())
+        {
+            return;
+        }
+
+        float minX = parent.GlobalPosition.X;
+        float maxX = minX + parent.Size.X;
+
+        if (initial && !initialPositionSet)
+        {
+            GlobalPosition = new(minX, parent.GlobalPosition.Y);
+            initialPositionSet = true;
+        }
+        else
+        {
+            if (!Pressed)
+            {
+                //float _x = maxX * (parent.ExternalValue / parent.MaxExternalValue);
+                //float _y = GlobalPosition.Y;
+                //
+                //GlobalPosition = new(_x, _y);
+            }
+
+            float x = Math.Clamp(GlobalPosition.X, minX, maxX);
+            float y = MathF.Ceiling(parent.GlobalPosition.Y);
+
+            GlobalPosition = new(x, y);
+        }
+    }
+}
