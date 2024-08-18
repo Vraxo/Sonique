@@ -89,9 +89,4 @@ public partial class HorizontalSlider : BaseSlider
                 EmptyStyle.Current.OutlineColor);
         }
     }
-
-    protected override void UpdateGrabber()
-    {
-
-    }
 }
