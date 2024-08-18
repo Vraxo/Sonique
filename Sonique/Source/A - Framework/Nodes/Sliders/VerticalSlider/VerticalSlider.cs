@@ -89,4 +89,9 @@ public partial class VerticalSlider : BaseSlider
                 EmptyStyle.Current.OutlineColor);
         }
     }
+
+    protected override void UpdateGrabber()
+    {
+
+    }
 }

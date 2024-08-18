@@ -2,15 +2,27 @@
 
 public abstract class BaseSlider : ClickableRectangle
 {
-    public float Percentage = 0;
-    public float MaxExternalValue = 0;
-    public float Value 
+    private float _percentage = 0;
+    public float Percentage
     {
-        get
+        get => _percentage;
+
+        set
         {
-            return MathF.Ceiling(Percentage * MaxExternalValue);
-        } 
+            _percentage = Math.Clamp(value, 0, 1);
+            UpdateGrabber();
+        }
     }
+
+    //public float MaxExternalValue = 0;
+    //public float Value 
+    //{
+    //    get
+    //    {
+    //        return MathF.Ceiling(Percentage * MaxExternalValue);
+    //    } 
+    //}
+
     public bool HasButtons = true;
     public ButtonStyle FilledStyle = new();
     public ButtonStyle EmptyStyle = new();
@@ -122,6 +134,8 @@ public abstract class BaseSlider : ClickableRectangle
     protected abstract void HandleClicks();
 
     protected abstract void Draw();
+
+    protected abstract void UpdateGrabber();
 
     protected void OnPercentageChanged()
     {

@@ -29,7 +29,7 @@ public class MusicPlayer : AudioPlayer
 
     public override void Update()
     {
-        slider.MaxExternalValue = AudioLength;
+        //slider.MaxExternalValue = AudioLength;
 
         if (slider.Grabber != null)
         {

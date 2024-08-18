@@ -85,7 +85,8 @@ public partial class ItemList : ClickableRectangle
     private void OnSliderValueChanged(object? sender, float e)
     {
         //int newStartingIndex = GetStartingIndexBasedOnSliderValue(e);
-        int newStartingIndex = (int)(sender as VerticalSlider).Value;
+        int numItemsBesidesThisPage = Items.Count - maxItemsShownAtOnce;
+        int newStartingIndex = e * NUMITEM;
         StartingIndex = newStartingIndex;
     }
 
