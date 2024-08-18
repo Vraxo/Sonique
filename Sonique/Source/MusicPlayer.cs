@@ -8,11 +8,17 @@ public class MusicPlayer : AudioPlayer
 
     public override void Start()
     {
-        slider = Parent.GetChild<HorizontalSlider>();
+        slider = Parent.GetChild<HorizontalSlider>("AudioSlider");
         slider.Released += OnSliderPercentageChanged;
-        slider.MaxExternalValue = Raylib.GetMusicTimeLength(Audio);
+
+        Parent.GetChild<HorizontalSlider>("VolumeSlider").Released += OnVolumeSliderPercentageChanged;
 
         base.Start();
+    }
+
+    private void OnVolumeSliderPercentageChanged(object? sender, float e)
+    {
+        Raylib.SetMusicVolume(Audio, e);
     }
 
     private void OnSliderPercentageChanged(object? sender, float e)
@@ -23,6 +29,8 @@ public class MusicPlayer : AudioPlayer
 
     public override void Update()
     {
+        slider.MaxExternalValue = AudioLength;
+
         if (slider.Grabber != null)
         {
             if (!slider.Grabber.Pressed)

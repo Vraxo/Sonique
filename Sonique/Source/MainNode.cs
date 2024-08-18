@@ -29,13 +29,35 @@ public class MainNode : Node
                 float height = slider.Size.Y;
                 slider.Size = new(width, height);
             }
-        });
+        }, "AudioSlider");
+
+        AddChild(new HorizontalSlider()
+        {
+            Position = new(50, 0),
+            HasButtons = false,
+            OnUpdate = (slider) =>
+            {
+                float screenWidth = Raylib.GetScreenWidth();
+
+                var audioSlider = GetChild<HorizontalSlider>("AudioSlider");
+
+                float spaceBetweenAudioSliderAndBorder = screenWidth - audioSlider.Size.X - audioSlider.GlobalPosition.X;
+
+                float x = screenWidth - slider.Size.X - spaceBetweenAudioSliderAndBorder;
+                float y = Raylib.GetScreenHeight() * 0.5f;
+                slider.Position = new(x, y);
+
+                float width = screenWidth / 5;
+                float height = slider.Size.Y;
+                slider.Size = new(width, height);
+            }
+        }, "VolumeSlider");
 
         AddChild(new Button
         {
             Position = new(25, 20),
             Size = new(32, 32),
-            Text = ">",
+            Text = "||",
             OnUpdate = (button) =>
             {
                 button.Position = new(button.Position.X, Raylib.GetScreenHeight() * 0.2f);
@@ -50,6 +72,7 @@ public class MainNode : Node
         musicPlayer.Audio = Raylib.LoadMusicStream(AudioPath);
         musicPlayer.Play();
 
+
         GetChild<Button>().LeftClicked += OnButtonLeftClicked;
     }
 
@@ -63,5 +86,11 @@ public class MainNode : Node
         {
             musicPlayer.Resume();
         }
+
+        var button = sender as Button;
+
+        button.Text = button.Text == ">" ?
+                      "||" :
+                      ">";
     }
 }

@@ -10,20 +10,6 @@ public partial class VerticalSlider : BaseSlider
         OriginPreset = OriginPreset.TopCenter;
     }
 
-    public override void UpdatePercentageBasedOnGrabber(bool released = false)
-    {
-        float previousPercentage = Percentage;
-
-        // Update the percentage based on the grabber's position
-        UpdatePercentage();
-
-        // If the percentage has changed, invoke the PercentageChanged event
-        if (Percentage != previousPercentage)
-        {
-            OnPercentageChanged();
-        }
-    }
-
     protected override void UpdatePercentage()
     {
         float currentPosition = Grabber.GlobalPosition.Y;
@@ -33,7 +19,6 @@ public partial class VerticalSlider : BaseSlider
         // Calculate and clamp the percentage
         Percentage = Math.Clamp((currentPosition - minPos) / (maxPos - minPos), 0, 1);
     }
-
 
     public override void MoveMiddleButton(int direction)
     {
@@ -60,6 +45,7 @@ public partial class VerticalSlider : BaseSlider
                 float y = Raylib.GetMousePosition().Y;
 
                 Grabber.GlobalPosition = new(x, y);
+                Grabber.Pressed = true;
             }
         }
     }
@@ -80,7 +66,7 @@ public partial class VerticalSlider : BaseSlider
             EmptyStyle.Current.FillColor);
 
         // Draw the filled part of the slider
-        Rectangle filledRectangle = new Rectangle()
+        Rectangle filledRectangle = new()
         {
             Position = new Vector2(rectangle.Position.X, rectangle.Position.Y + (1 - Percentage) * rectangle.Size.Y),
             Size = new Vector2(rectangle.Size.X, Percentage * rectangle.Size.Y)

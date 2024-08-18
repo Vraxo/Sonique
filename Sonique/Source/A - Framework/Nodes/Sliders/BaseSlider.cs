@@ -1,6 +1,4 @@
-﻿using Raylib_cs;
-
-namespace Sonique;
+﻿namespace Sonique;
 
 public abstract class BaseSlider : ClickableRectangle
 {
@@ -20,6 +18,8 @@ public abstract class BaseSlider : ClickableRectangle
     public Action<BaseSlider> OnUpdate = (slider) => { };
     public event EventHandler<float>? PercentageChanged;
     public event EventHandler<float>? Released;
+
+    protected bool wasPressed = false;
 
     private float _externalValue = 0;
     public float ExternalValue
@@ -82,7 +82,28 @@ public abstract class BaseSlider : ClickableRectangle
         base.Update();
     }
 
-    public abstract void UpdatePercentageBasedOnGrabber(bool released = false);
+    public void UpdatePercentageBasedOnGrabber()
+    {
+        float previousValue = Percentage;
+
+        // Update the percentage based on the grabber's position
+        UpdatePercentage();
+
+        // If the percentage has changed, invoke the PercentageChanged event
+        if (Percentage != previousValue)
+        {
+            OnPercentageChanged();
+        }
+
+        // Handle the Released event if the grabber was pressed and is now released
+        if (wasPressed && !Grabber.Pressed)
+        {
+            OnReleased();
+        }
+
+        // Update the pressed state
+        wasPressed = Grabber.Pressed;
+    }
 
     public abstract void MoveMiddleButton(int direction);
 

@@ -4,35 +4,10 @@ namespace Sonique;
 
 public partial class HorizontalSlider : BaseSlider
 {
-    private bool wasPressed = false;
-
     public HorizontalSlider()
     {
         Size = new(100, 10);
         OriginPreset = OriginPreset.CenterLeft;
-    }
-
-    public override void UpdatePercentageBasedOnGrabber(bool released = false)
-    {
-        float previousValue = Percentage;
-
-        // Update the percentage based on the grabber's position
-        UpdatePercentage();
-
-        // If the percentage has changed, invoke the PercentageChanged event
-        if (Percentage != previousValue)
-        {
-            OnPercentageChanged();
-        }
-
-        // Handle the Released event if the grabber was pressed and is now released
-        if (wasPressed && !Grabber.Pressed)
-        {
-            OnReleased();
-        }
-
-        // Update the pressed state
-        wasPressed = Grabber.Pressed;
     }
 
     protected override void UpdatePercentage()
@@ -56,6 +31,7 @@ public partial class HorizontalSlider : BaseSlider
         float y = Grabber.GlobalPosition.Y;
 
         Grabber.GlobalPosition = new(x, y);
+
         UpdatePercentageBasedOnGrabber();
     }
 
@@ -69,6 +45,7 @@ public partial class HorizontalSlider : BaseSlider
                 float y = Grabber.GlobalPosition.Y;
 
                 Grabber.GlobalPosition = new(x, y);
+                Grabber.Pressed = true;
             }
         }
     }
@@ -89,7 +66,7 @@ public partial class HorizontalSlider : BaseSlider
             EmptyStyle.Current.FillColor);
 
         // Draw the filled part of the slider
-        Rectangle filledRectangle = new Rectangle()
+        Rectangle filledRectangle = new()
         {
             Position = rectangle.Position,
             Size = new Vector2(Percentage * rectangle.Size.X, rectangle.Size.Y)

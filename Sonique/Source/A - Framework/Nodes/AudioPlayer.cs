@@ -7,9 +7,9 @@ public class AudioPlayer : Node
     public Music Audio { get; set; }
     public bool AutoPlay { get; set; } = false;
     public bool Loop { get; set; } = false;
+    public bool Playing => Raylib.IsMusicStreamPlaying(Audio);
     public float TimePlayed => Raylib.GetMusicTimePlayed(Audio);
     public float AudioLength => Raylib.GetMusicTimeLength(Audio);
-    public bool Playing => Raylib.IsMusicStreamPlaying(Audio);
 
     public override void Start()
     {
