@@ -11,6 +11,30 @@ public class AudioPlayer : Node
     public float TimePlayed => Raylib.GetMusicTimePlayed(Audio);
     public float AudioLength => Raylib.GetMusicTimeLength(Audio);
 
+    public float Volume
+    {
+        set
+        {
+            Raylib.SetMusicVolume(Audio, value);
+        }
+    }
+
+    public float Pitch
+    {
+        set
+        {
+            Raylib.SetMusicPitch(Audio, value);
+        }
+    }
+
+    public float Pan
+    {
+        set
+        {
+            Raylib.SetMusicPan(Audio, value);
+        }
+    }
+
     public override void Start()
     {
         if (AutoPlay)

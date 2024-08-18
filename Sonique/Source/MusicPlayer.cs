@@ -18,7 +18,7 @@ public class MusicPlayer : AudioPlayer
 
     private void OnVolumeSliderPercentageChanged(object? sender, float e)
     {
-        Raylib.SetMusicVolume(Audio, e);
+        Volume = e;
     }
 
     private void OnSliderPercentageChanged(object? sender, float e)
