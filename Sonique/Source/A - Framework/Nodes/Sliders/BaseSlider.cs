@@ -105,16 +105,16 @@ public abstract class BaseSlider : ClickableRectangle
         wasPressed = Grabber.Pressed;
     }
 
-    public abstract void MoveMiddleButton(int direction);
+    public abstract void MoveGrabber(int direction);
 
     private void OnDecrementButtonLeftClicked(object? sender, EventArgs e)
     {
-        MoveMiddleButton(-1);
+        MoveGrabber(-1);
     }
 
     private void OnIncrementButtonLeftClicked(object? sender, EventArgs e)
     {
-        MoveMiddleButton(1);
+        MoveGrabber(1);
     }
 
     protected abstract void UpdatePercentage();

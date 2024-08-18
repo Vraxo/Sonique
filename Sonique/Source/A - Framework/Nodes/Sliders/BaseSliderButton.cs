@@ -19,10 +19,10 @@ public abstract class BaseSliderButton : ClickableRectangle
         InheritPosition = false;
     }
 
-    public override void Start()
+    public override void Ready()
     {
         UpdatePosition(true);
-        base.Start();
+        base.Ready();
     }
 
     public override void Update()

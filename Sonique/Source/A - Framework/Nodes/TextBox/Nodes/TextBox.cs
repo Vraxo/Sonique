@@ -22,10 +22,10 @@ public partial class TextBox : ClickableRectangle
     private const int maxAscii = 125;
     private TextBoxCaret caret;
 
-    public override void Start()
+    public override void Ready()
     {
         caret = GetChild<TextBoxCaret>();
-        base.Start();
+        base.Ready();
     }
 
     public override void Update()

@@ -1,24 +1,19 @@
-﻿using Raylib_cs;
-
-namespace Sonique;
+﻿namespace Sonique;
 
 public class MusicPlayer : AudioPlayer
 {
     private HorizontalSlider slider;
 
-    public override void Start()
+    public override void Ready()
     {
         slider = Parent.GetChild<HorizontalSlider>("AudioSlider");
         slider.Released += OnSliderPercentageChanged;
 
-        Parent.GetChild<HorizontalSlider>("VolumeSlider").Released += OnVolumeSliderPercentageChanged;
+        var volumeSlider = Parent.GetChild<HorizontalSlider>("VolumeSlider");
+        volumeSlider.Released += OnVolumeSliderPercentageChanged;
+        volumeSlider.MoveGrabberTo(1);
 
-        base.Start();
-    }
-
-    private void OnVolumeSliderPercentageChanged(object? sender, float e)
-    {
-        Volume = e;
+        base.Ready();
     }
 
     private void OnSliderPercentageChanged(object? sender, float e)
@@ -27,8 +22,16 @@ public class MusicPlayer : AudioPlayer
         Play(timestamp);
     }
 
+    private void OnVolumeSliderPercentageChanged(object? sender, float e)
+    {
+        Volume = e;
+    }
+
     public override void Update()
     {
+        var volumeSlider = Parent.GetChild<HorizontalSlider>("VolumeSlider");
+        //volumeSlider.MoveGrabberTo(1);
+
         slider.MaxExternalValue = AudioLength;
 
         if (slider.Grabber != null)

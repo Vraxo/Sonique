@@ -20,7 +20,7 @@ public partial class HorizontalSlider : BaseSlider
         Percentage = Math.Clamp((currentPosition - minPos) / (maxPos - minPos), 0, 1);
     }
 
-    public override void MoveMiddleButton(int direction)
+    public override void MoveGrabber(int direction)
     {
         if (MaxExternalValue == 0)
         {
@@ -33,6 +33,19 @@ public partial class HorizontalSlider : BaseSlider
         Grabber.GlobalPosition = new(x, y);
 
         UpdatePercentageBasedOnGrabber();
+    }
+
+    public void MoveGrabberTo(float percentage)
+    {
+        //if (Grabber is null)
+        //{
+        //    return;
+        //}
+
+        float x = Grabber.GlobalPosition.X + percentage * Size.X;
+        float y = Grabber.GlobalPosition.Y;
+
+        Grabber.GlobalPosition = new(x, y);
     }
 
     protected override void HandleClicks()

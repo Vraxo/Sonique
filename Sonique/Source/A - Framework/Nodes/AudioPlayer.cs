@@ -35,7 +35,7 @@ public class AudioPlayer : Node
         }
     }
 
-    public override void Start()
+    public override void Ready()
     {
         if (AutoPlay)
         {

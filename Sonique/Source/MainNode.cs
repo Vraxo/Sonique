@@ -65,7 +65,7 @@ public class MainNode : Node
         });
     }
 
-    public override void Start()
+    public override void Ready()
     {
         musicPlayer = GetChild<MusicPlayer>();
 

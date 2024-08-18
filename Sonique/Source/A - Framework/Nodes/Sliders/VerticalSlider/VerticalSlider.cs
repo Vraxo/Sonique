@@ -20,7 +20,7 @@ public partial class VerticalSlider : BaseSlider
         Percentage = Math.Clamp((currentPosition - minPos) / (maxPos - minPos), 0, 1);
     }
 
-    public override void MoveMiddleButton(int direction)
+    public override void MoveGrabber(int direction)
     {
         if (MaxExternalValue == 0)
         {

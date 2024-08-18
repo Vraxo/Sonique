@@ -16,6 +16,8 @@ public class Node
 
     public virtual void Start() { }
 
+    public virtual void Ready() { }
+
     public virtual void Update() { }
 
     public virtual void Destroy()
@@ -39,7 +41,7 @@ public class Node
 
         if (!started)
         {
-            Start();
+            Ready();
             started = true;
         }
 
@@ -191,6 +193,7 @@ public class Node
         node.Parent = this;
 
         node.Build();
+        node.Start();
 
         Children.Add(node);
     }
@@ -200,7 +203,9 @@ public class Node
         node.Name = node.GetType().Name;
         node.Program = Program;
         node.Parent = this;
+        
         node.Build();
+        node.Start();
 
         Children.Add(node);
     }

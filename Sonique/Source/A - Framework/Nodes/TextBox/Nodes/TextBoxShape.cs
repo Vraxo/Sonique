@@ -8,7 +8,7 @@ public class TextBoxShape : Node2D
 
     private TextBox parent;
 
-    public override void Start()
+    public override void Ready()
     {
         parent = GetParent<TextBox>();
     }

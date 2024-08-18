@@ -42,7 +42,7 @@ public partial class ItemList : ClickableRectangle
         Size = new(250, 150);
     }
 
-    public override void Start()
+    public override void Ready()
     {
         Slider = GetChild<VerticalSlider>();
         Slider.PercentageChanged += OnSliderValueChanged;
@@ -50,7 +50,7 @@ public partial class ItemList : ClickableRectangle
 
         UpdateList(StartingIndex);
 
-        base.Start();
+        base.Ready();
     }
 
     public override void Update()
@@ -142,12 +142,12 @@ public partial class ItemList : ClickableRectangle
         if (mouseWheelMovement > 0)
         {
             UpdateList(StartingIndex - 1);
-            Slider.MoveMiddleButton(-1);
+            Slider.MoveGrabber(-1);
         }
         else if (mouseWheelMovement < 0)
         {
             UpdateList(StartingIndex + 1);
-            Slider.MoveMiddleButton(+1);
+            Slider.MoveGrabber(+1);
         }
     }
 
