@@ -4,7 +4,7 @@ public partial class VerticalSlider : BaseSlider
 {
     public override void Build()
     {
-        VerticalSliderButton middleButton = new();
+        VerticalGrabber middleButton = new();
         AddChild(middleButton, "MiddleButton");
 
         AddChild(new Button

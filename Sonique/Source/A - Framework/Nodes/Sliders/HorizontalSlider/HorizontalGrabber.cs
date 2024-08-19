@@ -2,7 +2,7 @@
 
 namespace Sonique;
 
-public class HorizontalSliderButton : BaseSliderButton
+public class HorizontalGrabber : BaseGrabber
 {
     private bool previouslyPressed = false;
 

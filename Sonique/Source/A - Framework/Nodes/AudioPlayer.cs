@@ -62,6 +62,8 @@ public class AudioPlayer : Node
 
     public void Play(float timestamp = 0)
     {
+        timestamp = Math.Clamp(timestamp, 0.1f, AudioLength);
+
         Raylib.PlayMusicStream(Audio);
         Raylib.SeekMusicStream(Audio, timestamp);
     }

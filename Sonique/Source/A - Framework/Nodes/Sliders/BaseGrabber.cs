@@ -2,18 +2,18 @@
 
 namespace Sonique;
 
-public abstract class BaseSliderButton : ClickableRectangle
+public abstract class BaseGrabber : ClickableRectangle
 {
     public Vector2 TextOrigin = Vector2.Zero;
     public string Text = "";
     public ButtonStyle Style = new();
     public bool Pressed = false;
-    public Action<BaseSliderButton> OnUpdate = (button) => { };
+    public Action<BaseGrabber> OnUpdate = (button) => { };
 
     protected bool alreadyClicked = false;
     protected bool initialPositionSet = false;
 
-    public BaseSliderButton()
+    public BaseGrabber()
     {
         Size = new(14, 14);
         InheritPosition = false;

@@ -2,24 +2,49 @@
 
 public abstract class BaseSlider : ClickableRectangle
 {
-    public float Percentage = 0;
     public float MaxExternalValue = 0;
-    public float Value 
+
+    private bool _hasButtons = true;
+    public bool HasButtons 
     {
-        get
+        get => _hasButtons;
+
+        set
         {
-            return MathF.Ceiling(Percentage * MaxExternalValue);
-        } 
+            _hasButtons = value;
+        }
     }
-    public bool HasButtons = true;
+
     public ButtonStyle FilledStyle = new();
     public ButtonStyle EmptyStyle = new();
-    public BaseSliderButton Grabber;
+    public BaseGrabber Grabber;
     public Action<BaseSlider> OnUpdate = (slider) => { };
     public event EventHandler<float>? PercentageChanged;
     public event EventHandler<float>? Released;
 
     protected bool wasPressed = false;
+
+    private bool grabberUpdated = true;
+
+    public float Value
+    {
+        get
+        {
+            return MathF.Ceiling(Percentage * MaxExternalValue);
+        }
+    }
+
+    private float _percentage = 0;
+    public float Percentage
+    {
+        get => _percentage;
+
+        set
+        {
+            _percentage = Math.Clamp(value, 0, 1);
+            grabberUpdated = false;
+        }
+    }
 
     private float _externalValue = 0;
     public float ExternalValue
@@ -51,7 +76,7 @@ public abstract class BaseSlider : ClickableRectangle
 
     public override void Start()
     {
-        Grabber = GetChild<BaseSliderButton>("MiddleButton");
+        Grabber = GetChild<BaseGrabber>("MiddleButton");
         Grabber.Layer = Layer;
 
         var decrementButton = GetChild<Button>("DecrementButton");
@@ -70,11 +95,16 @@ public abstract class BaseSlider : ClickableRectangle
             decrementButton.Layer = Layer;
             incrementButton.Layer = Layer;
         }
-
     }
 
     public override void Update()
     {
+        if (!grabberUpdated)
+        {
+            MoveGrabberTo(Percentage);
+            grabberUpdated = true;
+        }
+
         UpdatePercentage();
         HandleClicks();
         Draw();
@@ -122,6 +152,8 @@ public abstract class BaseSlider : ClickableRectangle
     protected abstract void HandleClicks();
 
     protected abstract void Draw();
+
+    protected abstract void MoveGrabberTo(float percentage);
 
     protected void OnPercentageChanged()
     {

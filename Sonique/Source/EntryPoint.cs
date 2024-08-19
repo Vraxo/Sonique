@@ -19,7 +19,7 @@ public class EntryPoint
                         "Resources/Audio.mp3"
         };
 
-        Program program = new(windowData, rootNode);
+        Program program = new(windowData, "Resources/MainNode.txt");
         program.Run();
     }
 }

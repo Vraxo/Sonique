@@ -2,9 +2,9 @@
 
 namespace Sonique;
 
-public class Program(WindowData windowData, Node rootNode)
+public class Program(WindowData windowData, string rootNodePath)
 {
-    public Node RootNode = rootNode;
+    public Node RootNode;
 
     private readonly WindowData windowData = windowData;
 
@@ -30,8 +30,13 @@ public class Program(WindowData windowData, Node rootNode)
         Raylib.SetWindowMinSize(width, height);
         Raylib.InitAudioDevice();
 
+        Scene scene = new(rootNodePath);
+        var mainNode = scene.Instantiate<MainNode>();
+        RootNode = mainNode;
         RootNode.Program = this;
-        RootNode.Build();
+
+        RootNode.Start();
+        //RootNode.Build();
     }
 
     private static void SetWindowFlags()

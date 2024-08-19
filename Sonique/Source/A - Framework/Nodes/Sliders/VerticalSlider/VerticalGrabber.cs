@@ -2,7 +2,7 @@
 
 namespace Sonique;
 
-public class VerticalSliderButton : BaseSliderButton
+public class VerticalGrabber : BaseGrabber
 {
     protected override void UpdatePosition(bool initial = false)
     {

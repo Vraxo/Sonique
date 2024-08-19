@@ -27,7 +27,8 @@ public partial class HorizontalSlider : BaseSlider
             return;
         }
 
-        float x = Grabber.GlobalPosition.X + direction * (Size.X / MaxExternalValue);
+        float unit = Size.X / MaxExternalValue;
+        float x = Grabber.GlobalPosition.X + direction * unit;
         float y = Grabber.GlobalPosition.Y;
 
         Grabber.GlobalPosition = new(x, y);
@@ -35,15 +36,10 @@ public partial class HorizontalSlider : BaseSlider
         UpdatePercentageBasedOnGrabber();
     }
 
-    public void MoveGrabberTo(float percentage)
+    protected override void MoveGrabberTo(float percentage)
     {
-        //if (Grabber is null)
-        //{
-        //    return;
-        //}
-
-        float x = Grabber.GlobalPosition.X + percentage * Size.X;
-        float y = Grabber.GlobalPosition.Y;
+        float x = GlobalPosition.X + percentage * Size.X;
+        float y = GlobalPosition.Y;
 
         Grabber.GlobalPosition = new(x, y);
     }

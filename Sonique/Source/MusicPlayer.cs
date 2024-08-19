@@ -7,19 +7,21 @@ public class MusicPlayer : AudioPlayer
     public override void Ready()
     {
         slider = Parent.GetChild<HorizontalSlider>("AudioSlider");
-        slider.Released += OnSliderPercentageChanged;
+        slider.Released += OnSliderReleased;
 
         var volumeSlider = Parent.GetChild<HorizontalSlider>("VolumeSlider");
-        volumeSlider.Released += OnVolumeSliderPercentageChanged;
-        volumeSlider.MoveGrabberTo(1);
+        volumeSlider.PercentageChanged += OnVolumeSliderPercentageChanged;
 
         base.Ready();
     }
 
-    private void OnSliderPercentageChanged(object? sender, float e)
+    private void OnSliderReleased(object? sender, float e)
     {
         float timestamp = e * AudioLength;
         Play(timestamp);
+
+        Console.WriteLine("E: " + e);
+        Console.WriteLine("T: " + timestamp);
     }
 
     private void OnVolumeSliderPercentageChanged(object? sender, float e)
@@ -29,9 +31,6 @@ public class MusicPlayer : AudioPlayer
 
     public override void Update()
     {
-        var volumeSlider = Parent.GetChild<HorizontalSlider>("VolumeSlider");
-        //volumeSlider.MoveGrabberTo(1);
-
         slider.MaxExternalValue = AudioLength;
 
         if (slider.Grabber != null)
@@ -43,12 +42,14 @@ public class MusicPlayer : AudioPlayer
                 // Calculate the percentage of the song played
                 float percentage = TimePlayed / AudioLength;
 
+                slider.Percentage = percentage;
+
                 // Calculate the new X position of the middle button based on the slider's width
                 float x = slider.Position.X + percentage * slider.Size.X;
                 float y = slider.Grabber.GlobalPosition.Y;
 
                 // Update the middle button's position
-                slider.Grabber.GlobalPosition = new(x, y);
+                //slider.Grabber.GlobalPosition = new(x, y);
             }
         }
 

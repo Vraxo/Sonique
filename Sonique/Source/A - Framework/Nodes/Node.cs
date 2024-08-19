@@ -5,8 +5,22 @@ public class Node
     public string Name { get; set; } = "";
     public Node? Parent { get; set; } = null;
     public List<Node> Children { get; set; } = [];
-    public Program? Program { get; set; } = null;
+    //public Program? Program { get; set; } = null;
     public bool Active { get; private set; } = true;
+
+    private Program _program;
+    public Program Program
+    {
+        get => _program;
+        set
+        {
+            _program = value;
+            foreach (var child in Children)
+            {
+                child.Program = value;
+            }
+        }
+    }
 
     private bool started = false;
 
@@ -108,6 +122,8 @@ public class Node
 
         string[] nodeNames = path.Split('/');
 
+        Console.WriteLine(Program is null);
+
         Node currentNode = Program.RootNode;
 
         for (int i = 0; i < nodeNames.Length; i++)
@@ -186,26 +202,34 @@ public class Node
 
     // Add child
 
-    public void AddChild(Node node, string name)
+    public void AddChild(Node node, string name, bool start = true)
     {
         node.Name = name;
         node.Program = Program;
         node.Parent = this;
 
         node.Build();
-        node.Start();
+
+        if (start)
+        {
+            node.Start();
+        }
 
         Children.Add(node);
     }
 
-    public void AddChild(Node node)
+    public void AddChild(Node node, bool start = true)
     {
         node.Name = node.GetType().Name;
         node.Program = Program;
         node.Parent = this;
         
         node.Build();
-        node.Start();
+
+        if (start)
+        {
+            node.Start();
+        }
 
         Children.Add(node);
     }
