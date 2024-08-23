@@ -82,4 +82,11 @@ public class AudioPlayer : Node
     {
         Raylib.StopMusicStream(Audio);
     }
+
+    public void Seek(float timestamp)
+    {
+        timestamp = Math.Clamp(timestamp, 0.1f, AudioLength);
+
+        Raylib.SeekMusicStream(Audio, timestamp);
+    }
 }

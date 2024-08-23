@@ -18,7 +18,15 @@ public class MusicPlayer : AudioPlayer
     private void OnSliderReleased(object? sender, float e)
     {
         float timestamp = e * AudioLength;
-        Play(timestamp);
+
+        if (Playing)
+        {
+            Play(timestamp);
+        }
+        else
+        {
+            Seek(timestamp);
+        }
     }
 
     private void OnVolumeSliderPercentageChanged(object? sender, float e)
