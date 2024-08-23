@@ -1,10 +1,12 @@
 ﻿using Raylib_cs;
+using System.Reflection;
 
 namespace Sonique;
 
-public class Program(WindowData windowData, string rootNodePath)
+public class Program(WindowData windowData, string rootNodePath, string[] args)
 {
     public Node RootNode;
+    public string[] Args = args;
 
     private readonly WindowData windowData = windowData;
 
@@ -16,10 +18,7 @@ public class Program(WindowData windowData, string rootNodePath)
 
     private void Initialize()
     {
-        if (!Directory.Exists("Resources"))
-        {
-            Directory.CreateDirectory("Resources");
-        }
+        SetCurrentDirectory();
 
         int width = (int)windowData.Resolution.X;
         int height = (int)windowData.Resolution.Y;
@@ -30,21 +29,29 @@ public class Program(WindowData windowData, string rootNodePath)
         Raylib.SetWindowMinSize(width, height);
         Raylib.InitAudioDevice();
 
+        Raylib.SetWindowIcon(Raylib.LoadImage("Assets/Icon.png"));
+        
         Scene scene = new(rootNodePath);
         var mainNode = scene.Instantiate<MainNode>();
         RootNode = mainNode;
         RootNode.Program = this;
 
         RootNode.Start();
-        //RootNode.Build();
+        RootNode.Build();
+    }
+
+    private void SetCurrentDirectory()
+    {
+        string assemblyLocation = Assembly.GetEntryAssembly().Location;
+        Environment.CurrentDirectory = Path.GetDirectoryName(assemblyLocation);
     }
 
     private static void SetWindowFlags()
     {
         Raylib.SetConfigFlags(
-            ConfigFlags.VSyncHint | 
-            ConfigFlags.Msaa4xHint |
-            ConfigFlags.HighDpiWindow |
+            //ConfigFlags.VSyncHint | 
+            //ConfigFlags.Msaa4xHint |
+            //ConfigFlags.HighDpiWindow |
             ConfigFlags.ResizableWindow |
             ConfigFlags.AlwaysRunWindow);
     }

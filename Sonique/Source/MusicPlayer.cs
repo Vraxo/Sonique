@@ -19,9 +19,6 @@ public class MusicPlayer : AudioPlayer
     {
         float timestamp = e * AudioLength;
         Play(timestamp);
-
-        Console.WriteLine("E: " + e);
-        Console.WriteLine("T: " + timestamp);
     }
 
     private void OnVolumeSliderPercentageChanged(object? sender, float e)

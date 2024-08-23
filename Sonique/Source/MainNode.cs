@@ -4,7 +4,7 @@ namespace Sonique;
 
 public class MainNode : Node
 {
-    public string AudioPath = "Resources/Audio.mp3";
+    public string AudioPath = "Assets/Audio.mp3";
 
     private MusicPlayer musicPlayer;
 
@@ -15,13 +15,13 @@ public class MainNode : Node
         //    AutoPlay = false,
         //    Loop = true,
         //});
-
+        //
         //AddChild(new HorizontalSlider()
         //{
         //    Position = new(50, 0),
         //    HasButtons = false,
         //}, "AudioSlider");
-        
+        //
         //AddChild(new HorizontalSlider()
         //{
         //    Position = new(50, 0),
@@ -39,11 +39,13 @@ public class MainNode : Node
 
     public override void Ready()
     {
+        string audioPath = Program.Args.Length > 0 ?
+                           Program.Args[0] :
+                           AudioPath;
+
         musicPlayer = GetChild<MusicPlayer>();
-        
-        musicPlayer.Audio = Raylib.LoadMusicStream(AudioPath);
+        musicPlayer.Audio = Raylib.LoadMusicStream(audioPath);
         musicPlayer.Play();
-        musicPlayer.Pitch = 0.9f;
         
         GetChild<Button>().LeftClicked += OnButtonLeftClicked;
     }

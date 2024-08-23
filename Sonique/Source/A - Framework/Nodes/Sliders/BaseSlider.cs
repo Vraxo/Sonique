@@ -5,16 +5,7 @@ public abstract class BaseSlider : ClickableRectangle
     public float MaxExternalValue = 0;
 
     private bool _hasButtons = true;
-    public bool HasButtons 
-    {
-        get => _hasButtons;
-
-        set
-        {
-            _hasButtons = value;
-        }
-    }
-
+    public bool HasButtons { get; set; } = true;
     public ButtonStyle FilledStyle = new();
     public ButtonStyle EmptyStyle = new();
     public BaseGrabber Grabber;

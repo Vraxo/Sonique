@@ -60,7 +60,7 @@ public class AudioPlayer : Node
         }
     }
 
-    public void Play(float timestamp = 0)
+    public void Play(float timestamp = 0.1f)
     {
         timestamp = Math.Clamp(timestamp, 0.1f, AudioLength);
 

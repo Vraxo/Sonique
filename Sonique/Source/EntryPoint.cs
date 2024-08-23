@@ -16,10 +16,10 @@ public class EntryPoint
         {
             AudioPath = args.Length > 0 ?
                         args[0] :
-                        "Resources/Audio.mp3"
+                        "Assets/Audio.mp3"
         };
 
-        Program program = new(windowData, "Resources/MainNode.txt");
+        Program program = new(windowData, "Assets/Scenes/MainNode.txt", args);
         program.Run();
     }
 }

@@ -59,7 +59,7 @@ public partial class TextBox : ClickableRectangle
     {
         if (IsMouseOver())
         {
-            //BackgroundStyle.Current = BackgroundStyle.Hover;
+            //BackgroundStyle.Current = BackgroundStyle.HoverFill;
 
             if (Raylib.IsMouseButtonDown(MouseButton.Left) && OnTopLeft)
             {

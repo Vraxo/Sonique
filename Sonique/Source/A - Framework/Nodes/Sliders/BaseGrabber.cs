@@ -103,14 +103,18 @@ public abstract class BaseGrabber : ClickableRectangle
 
     private void DrawOutline(Rectangle rectangle)
     {
-        if (Style.Current.OutlineThickness > 0)
+        if (Style.Current.OutlineThickness == 0)
         {
-            Raylib.DrawRectangleRoundedLines(
-                rectangle,
-                Style.Current.Roundness,
-                (int)Size.Y,
-                Style.Current.OutlineThickness,
-                Style.Current.OutlineColor);
+            return;
         }
+
+        Raylib.DrawRectangleRoundedLines(
+            rectangle,
+            Style.Current.Roundness,
+            (int)Size.Y,
+            Style.Current.OutlineThickness,
+            Style.Current.OutlineColor);
+
+        //Console.WriteLine(Style.Current.OutlineThickness);
     }
 }

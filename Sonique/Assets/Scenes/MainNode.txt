@@ -1,0 +1,21 @@
+[MainNode]
+Name = MainScene
+
+[MusicPlayer]
+AutoPlay = false
+Loop = true
+
+[HorizontalSlider]
+Name = AudioSlider
+Position = 50 0
+HasButtons = false
+
+[HorizontalSlider]
+Name = VolumeSlider
+HasButtons = false
+Percentage = 1
+
+[Button]
+Position = 25 20
+Size = 32 32
+Text = ||

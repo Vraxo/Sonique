@@ -14,7 +14,7 @@ public class FontLoader
         {
             instance ??= new();
 
-            if (!File.Exists("Resources/RobotoMono.ttf"))
+            if (!File.Exists("Assetsw/RobotoMono.ttf"))
             {
                 //byte[] defaultFont = Resources.RobotoMono;
                 //File.WriteAllBytes("Resources/RobotoMono.ttf", defaultFont);
@@ -27,7 +27,7 @@ public class FontLoader
     private FontLoader()
     {
         string name = "RobotoMono 32";
-        Font font = Raylib.LoadFontEx("Resources/RobotoMono.ttf", 32, null, 0);
+        Font font = Raylib.LoadFontEx("Assets/RobotoMono.ttf", 32, null, 0);
         Fonts.Add(name, font);
 
         Texture2D texture = Fonts[name].Texture;

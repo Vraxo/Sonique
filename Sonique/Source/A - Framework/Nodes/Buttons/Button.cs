@@ -257,8 +257,9 @@ public class Button : ClickableRectangle
             Size = Size
         };
 
+        DrawOutline();
         DrawInside(rectangle);
-        DrawOutline(rectangle);
+        //DrawOutline(rectangle);
     }
 
     private void DrawInside(Rectangle rectangle)
@@ -270,15 +271,32 @@ public class Button : ClickableRectangle
             Style.Current.FillColor);
     }
 
-    private void DrawOutline(Rectangle rectangle)
+    private void DrawOutline()
     {
-        if (Style.Current.OutlineThickness > 0)
+        if (Style.Current.OutlineThickness < 0)
         {
-            Raylib.DrawRectangleRoundedLines(
+            return;
+        }
+
+        //Raylib.DrawRectangleRoundedLines(
+        //    rectangle,
+        //    Style.Current.Roundness,
+        //    (int)Size.Y,
+        //    Style.Current.OutlineThickness,
+        //    Style.Current.OutlineColor);
+
+        for (int i = 0; i <= Style.Current.OutlineThickness; i++)
+        {
+            Rectangle rectangle = new()
+            {
+                Position = GlobalPosition - Origin - new Vector2(i, i),
+                Size = new(Size.X + i + 1, Size.Y + i + 1)
+            };
+
+            Raylib.DrawRectangleRounded(
                 rectangle,
                 Style.Current.Roundness,
                 (int)Size.Y,
-                Style.Current.OutlineThickness,
                 Style.Current.OutlineColor);
         }
     }
