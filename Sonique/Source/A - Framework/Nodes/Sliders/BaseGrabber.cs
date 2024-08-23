@@ -82,18 +82,28 @@ public abstract class BaseGrabber : ClickableRectangle
 
     private void Draw()
     {
+        if (!Visible)
+        {
+            return;
+        }
+
+        float x = (float)Math.Round(GlobalPosition.X);
+        float y = (float)Math.Round(GlobalPosition.Y);
+
+        Vector2 temporaryPosition = new(x, y);
+
+        DrawOutline(temporaryPosition);
+        DrawInside(temporaryPosition);
+    }
+
+    private void DrawInside(Vector2 position)
+    {
         Rectangle rectangle = new()
         {
-            Position = GlobalPosition - Origin,
+            Position = position - Origin,
             Size = Size
         };
 
-        DrawInside(rectangle);
-        DrawOutline(rectangle);
-    }
-
-    private void DrawInside(Rectangle rectangle)
-    {
         Raylib.DrawRectangleRounded(
             rectangle,
             Style.Current.Roundness,
@@ -101,20 +111,26 @@ public abstract class BaseGrabber : ClickableRectangle
             Style.Current.FillColor);
     }
 
-    private void DrawOutline(Rectangle rectangle)
+    private void DrawOutline(Vector2 position)
     {
-        if (Style.Current.OutlineThickness == 0)
+        if (Style.Current.OutlineThickness < 0)
         {
             return;
         }
 
-        Raylib.DrawRectangleRoundedLines(
-            rectangle,
-            Style.Current.Roundness,
-            (int)Size.Y,
-            Style.Current.OutlineThickness,
-            Style.Current.OutlineColor);
+        for (int i = 0; i <= Style.Current.OutlineThickness; i++)
+        {
+            Rectangle rectangle = new()
+            {
+                Position = position - Origin - new Vector2(i, i),
+                Size = new(Size.X + i + 1, Size.Y + i + 1)
+            };
 
-        //Console.WriteLine(Style.Current.OutlineThickness);
+            Raylib.DrawRectangleRounded(
+                rectangle,
+                Style.Current.Roundness,
+                (int)Size.Y,
+                Style.Current.OutlineColor);
+        }
     }
 }

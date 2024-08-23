@@ -251,19 +251,18 @@ public class Button : ClickableRectangle
 
     private void DrawShape()
     {
+        DrawOutline();
+        DrawInside();
+    }
+
+    private void DrawInside()
+    {
         Rectangle rectangle = new()
         {
             Position = GlobalPosition - Origin,
             Size = Size
         };
 
-        DrawOutline();
-        DrawInside(rectangle);
-        //DrawOutline(rectangle);
-    }
-
-    private void DrawInside(Rectangle rectangle)
-    {
         Raylib.DrawRectangleRounded(
             rectangle, 
             Style.Current.Roundness, 
@@ -277,13 +276,6 @@ public class Button : ClickableRectangle
         {
             return;
         }
-
-        //Raylib.DrawRectangleRoundedLines(
-        //    rectangle,
-        //    Style.Current.Roundness,
-        //    (int)Size.Y,
-        //    Style.Current.OutlineThickness,
-        //    Style.Current.OutlineColor);
 
         for (int i = 0; i <= Style.Current.OutlineThickness; i++)
         {
