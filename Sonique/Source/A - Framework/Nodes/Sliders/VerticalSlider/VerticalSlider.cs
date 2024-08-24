@@ -70,8 +70,8 @@ public partial class VerticalSlider : BaseSlider
         // Draw the filled part of the slider
         Rectangle filledRectangle = new()
         {
-            Position = new Vector2(rectangle.Position.X, rectangle.Position.Y + (1 - Percentage) * rectangle.Size.Y),
-            Size = new Vector2(rectangle.Size.X, Percentage * rectangle.Size.Y)
+            Position = new(rectangle.Position.X, rectangle.Position.Y + (1 - Percentage) * rectangle.Size.Y),
+            Size = new(rectangle.Size.X, Percentage * rectangle.Size.Y)
         };
 
         Raylib.DrawRectangleRounded(
